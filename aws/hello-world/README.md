@@ -1,43 +1,24 @@
-
 # Terraform Hello World Example
 
 ## Overview
+
 This is a basic Terraform example that creates an AWS S3 bucket.
 
-## Prerequisites
-- Terraform installed 
-- AWS account configured with credentials
-- AWS CLI configured
+## Prerequisites & Configuration
 
-## Configuration
+- Terraform installed
+- AWS account configured with credentials --> `terraform-group` created and `AdminAccess` Policy attached --> `terraform-user` created and added to group `terraform-group`
+- provider related creds set in `.aws_secret` - dir and read in `.bash_profile` to set `environment vars`
+- `main.tf` and `provider.tf` - created and pushed in git
+- initiated terraform command
 
-Create a `main.tf` file:
+## Output from EC2-Server
 
-```hcl
-terraform {
-    required_providers {
-        aws = {
-            source  = "hashicorp/aws"
-            version = "~> 5.0"
-        }
-    }
-}
-
-provider "aws" {
-    region = "us-east-1"
-}
-
-resource "aws_s3_bucket" "hello_world" {
-    bucket = "my-hello-world-bucket-${data.aws_caller_identity.current.account_id}"
-}
-
-data "aws_caller_identity" "current" {}
-
-output "bucket_name" {
-    value       = aws_s3_bucket.hello_world.id
-    description = "The name of the S3 bucket"
-}
-```
+> ```hcl
+> terraform init
+> ```
+>
+> ![no image found](./imgs/tf_Init_1.png)
 
 ## Usage
 
@@ -55,6 +36,8 @@ terraform apply
 terraform destroy
 ```
 
-## Output
-After applying, you'll see the created S3 bucket name in the output.
-## Cleanup
+## Errors Faced
+
+> 1. ![No Error Image found](./imgs/tf_plan_error-1.png)
+>
+> Resolution: 
