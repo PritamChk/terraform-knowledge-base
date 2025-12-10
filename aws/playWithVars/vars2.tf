@@ -8,7 +8,7 @@ variable "cloud_catalog" {
     aws = {
       os_images = {
         rhel   = "ami-079db87dc4c10ac91"
-        ubuntu = "ami-05c3dc660cbf422d7"
+        ubuntu = "ami-0ade68f094cc81635"
       }
 
       instance_types = {
