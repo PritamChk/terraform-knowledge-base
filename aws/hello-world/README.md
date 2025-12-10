@@ -40,4 +40,4 @@ terraform destroy
 
 > 1. ![No Error Image found](./imgs/tf_plan_error-1.png)
 >
-> Resolution: 
+> 1. ![No Error Image found](./imgs/error-2.png)olution:
