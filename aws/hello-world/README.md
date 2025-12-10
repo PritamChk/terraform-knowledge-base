@@ -14,11 +14,23 @@ This is a basic Terraform example that creates an AWS S3 bucket.
 
 ## Output from EC2-Server
 
-> ```hcl
+> ```shell
 > terraform init
 > ```
 >
 > ![no image found](./imgs/tf_Init_1.png)
+>
+> ```shell
+> terraform plan -var AWS_ACCESS_KEY=$AWS_ACCESS_KEY  -var AWS_SECRET_KEY=$AWS_SECRET_KEY
+> ```
+>
+> ![no image found](./imgs/planShow.png)
+>
+> ```shell
+> terraform apply -var AWS_ACCESS_KEY=$AWS_ACCESS_KEY  -var AWS_SECRET_KEY=$AWS_SECRET_KEY
+> ```
+>
+> ![no image found](./imgs/planCreation.png)
 
 ## Usage
 
@@ -27,7 +39,7 @@ This is a basic Terraform example that creates an AWS S3 bucket.
 terraform init
 
 # Preview changes
-terraform plan
+terraform -var AWS_ACCESS_KEY=$AWS_ACCESS_KEY  -var AWS_SECRET_KEY=$AWS_SECRET_KEY
 
 # Apply configuration
 terraform apply
