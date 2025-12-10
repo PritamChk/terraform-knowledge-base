@@ -48,3 +48,10 @@ terraform-knowledge-base/
 ## Examples
 
 - **aws/hello-world**: Basic Terraform configuration demonstrating AWS resource provisioning
+
+
+### Reference Git Repo for Learning :
+
+> [Click Here: terraform-zero-to-hero](https://github.com/iam-veeramalla/terraform-zero-to-hero.git)
+
+> [YouTube Series](https://youtube.com/playlist?list=PLdpzxOOAlwvI0O4PeKVV1-yJoX2AqIWuf&si=KpazBFGeN2XQsmGO)
