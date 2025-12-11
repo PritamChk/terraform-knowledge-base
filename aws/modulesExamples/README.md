@@ -30,10 +30,10 @@ To use these modules in your Terraform configurations:
 
 ## Outputs
 
-> [!DANGER] Public IP not printing post creation
+> ![DANGER] Public IP not printing post creation
 >
 > ![404-Img-not-found](./imgs/pubip_of_vm_not_showing.png)
 
-> [!NOTE] Public IP printing post alteration in script
+> 1[NOTE] Public IP printing post alteration in script
 >
 > ![404-Img-not-found](./imgs/image_pub_ip_show.png)
