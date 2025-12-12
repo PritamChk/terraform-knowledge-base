@@ -15,3 +15,11 @@ variable "master_vm_tag" {
 variable "worker_vm_tag" {
   type = string
 }
+
+variable "os" {
+  type = string
+}
+
+variable "key_name" {
+  type = string
+}
