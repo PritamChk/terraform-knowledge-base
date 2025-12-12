@@ -3,7 +3,7 @@ master_vm_tag={
     Name = "k3s-master-node"
 }
 worker_vm_tag={
-    Name = "k3s-master-node"
+    Name = "k3s-worker-node"
 }
 vm_type = "t2.medium"
 os="ami-00ca570c1b6d79f36"
