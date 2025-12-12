@@ -5,6 +5,6 @@ master_vm_tag={
 worker_vm_tag={
     Name = "k3s-master-node"
 }
-vm_type = "t2.meduim"
+vm_type = "t2.medium"
 os="ami-00ca570c1b6d79f36"
 key_name = "aws-k3s-key"

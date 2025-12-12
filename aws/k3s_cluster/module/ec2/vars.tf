@@ -1,24 +1,23 @@
-variable "region" {
-  type = string
-  default = "ap-south-1"
+
+
+variable "ami" {
+  type        = string
+  description = "AMI ID to use for the EC2 instance"
 }
 
-variable "os" {
-  type = string
-  description = "AWS Linux 2023"
-}
-
-variable "vm_type" {
-  type = string
-  default = "t3.medium"
+variable "instance_type" {
+  type        = string
+  default     = "t3.micro"
+  description = "EC2 instance type"
 }
 
 variable "key_name" {
-  type = string
-  default = null
+  type        = string
+  description = "Key pair name for SSH access"
 }
 
-variable "vm_tag" {
-  type = string
-  description = "Tags to apply to the VM"
+variable "tags" {
+  type        = map(string)
+  default     = {}
+  description = "Tags to apply to the EC2 instance"
 }
