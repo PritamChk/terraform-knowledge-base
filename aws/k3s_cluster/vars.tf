@@ -10,13 +10,17 @@ variable "secret" {
 }
 
 variable "master_vm_tag" {
-  type = string
+  type = map(string)
 }
 variable "worker_vm_tag" {
-  type = string
+  type = map(string)
 }
 
 variable "os" {
+  type = string
+}
+
+variable "vm_type" {
   type = string
 }
 

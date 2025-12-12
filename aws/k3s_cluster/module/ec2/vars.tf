@@ -13,10 +13,11 @@ variable "vm_type" {
   default = "t3.medium"
 }
 
-variable "vm_tag" {
+variable "key_name" {
   type = string
 }
 
-variable "key_name" {
-  type = string
+variable "vm_tag" {
+  type = map(string)
+  description = "Tags to apply to the VM"
 }
