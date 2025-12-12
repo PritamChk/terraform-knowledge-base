@@ -18,8 +18,7 @@ variable "key_name" {
   default = null
 }
 
-variable "tags" {
-  type = map(string)
+variable "vm_tag" {
+  type = string
   description = "Tags to apply to the VM"
-  default = {}
 }

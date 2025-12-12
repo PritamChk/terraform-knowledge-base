@@ -11,11 +11,15 @@ variable "secret" {
 
 variable "master_vm_tag" {
   type = map(string)
-  default = {}
+  default = {
+    Name="k3s-master-node"
+  }
 }
 variable "worker_vm_tag" {
   type = map(string)
-  default = {}
+  default = {
+    Name="k3s-worker-node"
+  }
 }
 
 variable "os" {
