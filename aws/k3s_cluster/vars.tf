@@ -11,9 +11,11 @@ variable "secret" {
 
 variable "master_vm_tag" {
   type = map(string)
+  default = {}
 }
 variable "worker_vm_tag" {
   type = map(string)
+  default = {}
 }
 
 variable "os" {
