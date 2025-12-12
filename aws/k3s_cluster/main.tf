@@ -1,5 +1,5 @@
 module "master_node" {
-  source        = "../modules/ec2"
+  source        = "../module/ec2"
   ami           = var.os               # your AMI ID
   instance_type = var.vm_type          # e.g., t3.medium
   key_name      = var.key_name         # existing key pair
@@ -7,7 +7,7 @@ module "master_node" {
 }
 
 module "worker_node" {
-  source        = "../modules/ec2"
+  source        = "../module/ec2"
   ami           = var.os
   instance_type = var.vm_type
   key_name      = var.key_name
