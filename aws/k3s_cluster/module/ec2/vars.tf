@@ -15,6 +15,7 @@ variable "vm_type" {
 
 variable "key_name" {
   type = string
+  default = null
 }
 
 variable "tag" {
