@@ -23,7 +23,7 @@ sudo hostnamectl set-hostname $node_name
 # Download the latest K3s binary
 sudo curl -Lo /usr/local/bin/k3s \
   $download_link \
-  && chmod a+x /usr/local/bin/k3s
+  && sudo chmod a+x /usr/local/bin/k3s
 
 # Start the server in the background, allow kubectl access to kubeconfig
 sudo nohup k3s server --write-kubeconfig-mode 644 &
@@ -36,13 +36,13 @@ cat << 'EOF' > startk3s_cluster.sh
 #!/bin/bash
 nohup k3s server --write-kubeconfig-mode 644 &
 EOF
-chmod +x startk3s_cluster.sh
+sudo chmod +x startk3s_cluster.sh
 
 cat << 'EOF' > stopk3s_cluster.sh
 #!/bin/bash
 pkill -f k3s
 EOF
-chmod +x stopk3s_cluster.sh
+sudo chmod +x stopk3s_cluster.sh
 
 ## Generate and display the node token for worker nodes to join the cluster
 echo "K3s Master Node Token (use this to join worker nodes to the cluster):

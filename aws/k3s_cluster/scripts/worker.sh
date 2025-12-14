@@ -25,7 +25,7 @@ sudo hostnamectl set-hostname $node_name
 # Download the latest K3s binary
 sudo curl -Lo /usr/local/bin/k3s \
   $download_link \
-  && chmod a+x /usr/local/bin/k3s
+  && sudo chmod a+x /usr/local/bin/k3s
 
 # Start the server in the background, allow kubectl access to kubeconfig
 #nohup k3s server --write-kubeconfig-mode 644 &
