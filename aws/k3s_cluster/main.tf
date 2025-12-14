@@ -62,7 +62,7 @@ resource "null_resource" "worker_setup" {
   provisioner "remote-exec" {
     inline = [ 
       "chmod +x /home/ec2-user/worker.sh",
-      "sudo /home/ec2-user/worker.sh '' '' '${module.master_node.private_ip}' '${data.local_file.k3s_token.content}'"
+      "sudo /home/ec2-user/worker.sh '' '' '${module.master_node.public_ip}' '${data.local_file.k3s_token.content}'"
      ]
   }
 
