@@ -70,4 +70,12 @@ sudo cat /var/lib/rancher/k3s/server/node-token
 sudo cat /var/lib/rancher/k3s/server/node-token > /tmp/token.txt
 sudo cat /tmp/token.txt
 
+## Add alias to ec2-user bash_profile for kubectl
+ALIAS="""
+alias k='kubectl'
+alias nodes='kubectl get nodes'
+alias pods='kubectl get pods'
+alias ns='kubectl get namespace'
+"""
+echo $ALIAS >> /home/ec2-user/.bash_profile
 exit 0
