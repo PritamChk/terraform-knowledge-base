@@ -8,4 +8,4 @@ worker_vm_tag={
 vm_type = "t2.medium"
 os="ami-00ca570c1b6d79f36"
 key_name = "aws-k3s-key"
-private_key_path = "/home/ec2-user/.ssh/aws-k3s-key.ppk"
+private_key_path = "/home/ec2-user/.ssh/aws-k3s-key.pem"

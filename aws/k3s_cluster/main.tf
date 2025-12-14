@@ -51,7 +51,7 @@ resource "null_resource" "worker_setup" {
   connection {
     type = "ssh"
     user = "ec2-user"
-    host = module.master_node.public_ip
+    host = module.worker_node.public_ip
     private_key = file(var.private_key_path)
   }
   provisioner "file" {
