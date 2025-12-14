@@ -21,7 +21,7 @@ resource "null_resource" "master_setup" {
 
   provisioner "remote-exec" {
     inline = [ 
-      "chmod +x /home/ec2-user/master.sh",
+      "sudo chmod +x /home/ec2-user/master.sh",
       "sudo /home/ec2-user/master.sh"
      ]
   }

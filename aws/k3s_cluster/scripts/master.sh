@@ -38,7 +38,7 @@ nohup k3s server --write-kubeconfig-mode 644 &
 EOF
 sudo chmod +x startk3s_cluster.sh
 
-cat << 'EOF' > stopk3s_cluster.sh
+cat << EOF > stopk3s_cluster.sh
 #!/bin/bash
 pkill -f k3s
 EOF
