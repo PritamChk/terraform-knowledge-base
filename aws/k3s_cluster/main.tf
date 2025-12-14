@@ -21,7 +21,7 @@ resource "null_resource" "master_setup" {
 
   provisioner "remote-exec" {
     inline = [ 
-      "sudo chmod +x /home/ec2-user/master.sh",
+      "sudo chmod +x /home/ec2-user/master.sh '' '' '${module.master_node.public_ip}'",
       "sudo /home/ec2-user/master.sh"
      ]
   }
