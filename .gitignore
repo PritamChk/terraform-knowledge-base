@@ -1,2 +1,6 @@
 *.ppk
 *.key
+*.pem
+*.tfstate
+*.tfstate.backup
+.terraform/
