@@ -46,7 +46,7 @@ module "worker_node" {
   tags          = var.worker_vm_tag
 }
 
-resource "null_resource" "master_setup" {
+resource "null_resource" "worker_setup" {
   depends_on = [ null_resource.master_setup ]
   connection {
     type = "ssh"
