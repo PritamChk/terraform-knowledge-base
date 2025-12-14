@@ -1,11 +1,11 @@
 node_name=$1
 version=$2
-master_node_ip=$3
+node_ip=$3
 token=$4
 
 if [ -z "$node_name" ]; then
     echo "Usage: $0 <node_name> not given so setting to default master-n1"
-    node_name="master-n1"
+    node_name="worker-n1"
 fi
 
 if [ -z "$version" ]; then
@@ -22,6 +22,7 @@ download_link="https://github.com/k3s-io/k3s/releases/download/$version_for_url/
 
 # Set hostname
 sudo hostnamectl set-hostname $node_name
+sudo echo "$node_ip $node_name" >> /etc/hosts
 # Download the latest K3s binary
 sudo curl -Lo /usr/local/bin/k3s \
   $download_link \
@@ -34,8 +35,13 @@ sudo curl -Lo /usr/local/bin/k3s \
 sudo ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
 
 
-echo "nohup k3s agent --server https://$master_node_ip:6443 --token $token &"
-echo "nohup k3s agent --server https://$master_node_ip:6443 --token $token  &" > setupNode.sh
+echo "nohup k3s agent --server https://$node_ip:6443 --token $token &"
+echo "sudo nohup k3s agent --server https://$node_ip:6443 --token $token  &" > setupNode.sh
 sudo chmod +x setupNode.sh
-sudo ./setupNode.sh
+if [ -z "$token" ]; then
+    echo "Error: K3s token is required to join the worker node to the cluster."
+    exit 1
+else
+    sudo ./setupNode.sh
+fi
 exit 0

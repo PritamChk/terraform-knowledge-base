@@ -1,5 +1,7 @@
 node_name=$1
 version=$2
+node_ip=$3
+
 
 if [ -z "$node_name" ]; then
     echo "Usage: $0 <node_name> not given so setting to default master-n1"
@@ -20,6 +22,7 @@ download_link="https://github.com/k3s-io/k3s/releases/download/$version_for_url/
 # sudo su
 # Set hostname
 sudo hostnamectl set-hostname $node_name
+sudo echo "$node_ip $node_name" >> /etc/hosts
 # Download the latest K3s binary
 sudo curl -Lo /usr/local/bin/k3s \
   $download_link \
@@ -43,7 +46,24 @@ cat << EOF > stopk3s_cluster.sh
 pkill -f k3s
 EOF
 sudo chmod +x stopk3s_cluster.sh
-sleep 5
+
+echo "Waiting for K3s token to be generated..."
+TIMEOUT=30
+ELAPSED=0
+INTERVAL=2
+sudo chmod -R 744 /var/lib/rancher/k3s/server
+while [ ! -f /var/lib/rancher/k3s/server/node-token ]; do
+  if [ $ELAPSED -ge $TIMEOUT ]; then
+    echo "Error: Timed out waiting for K3s token after ${TIMEOUT} seconds."
+    exit 1
+  fi
+  sleep $INTERVAL
+  ELAPSED=$((ELAPSED + INTERVAL))
+done
+
+echo "Token generated!"
+
+
 ## Generate and display the node token for worker nodes to join the cluster
 echo "K3s Master Node Token (use this to join worker nodes to the cluster):"
 sudo cat /var/lib/rancher/k3s/server/node-token
