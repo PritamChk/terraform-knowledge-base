@@ -72,10 +72,10 @@ sudo cat /tmp/token.txt
 
 ## Add alias to ec2-user bash_profile for kubectl
 ALIAS="""
-alias k='kubectl'
-alias nodes='kubectl get nodes'
-alias pods='kubectl get pods'
-alias ns='kubectl get namespace'
+alias k='kubectl'\n
+alias nodes='kubectl get nodes'\n
+alias pods='kubectl get pods'\n
+alias ns='kubectl get namespace'\n
 """
-echo $ALIAS >> /home/ec2-user/.bash_profile
+echo -e $ALIAS | tr -d '^ ' >> /home/ec2-user/.bash_profile
 exit 0
