@@ -17,19 +17,19 @@ download_link="https://github.com/k3s-io/k3s/releases/download/$version_for_url/
 
 
 # Switch to root
-sudo su
+# sudo su
 # Set hostname
-hostnamectl set-hostname $node_name
+sudo hostnamectl set-hostname $node_name
 # Download the latest K3s binary
-curl -Lo /usr/local/bin/k3s \
+sudo curl -Lo /usr/local/bin/k3s \
   $download_link \
   && chmod a+x /usr/local/bin/k3s
 
 # Start the server in the background, allow kubectl access to kubeconfig
-nohup k3s server --write-kubeconfig-mode 644 &
+sudo nohup k3s server --write-kubeconfig-mode 644 &
 
 # Create kubectl symlink
-ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
+sudo ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
 
 # Save start/stop scripts
 cat << 'EOF' > startk3s_cluster.sh

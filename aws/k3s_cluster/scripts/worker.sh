@@ -19,11 +19,11 @@ download_link="https://github.com/k3s-io/k3s/releases/download/$version_for_url/
 
 
 # Switch to root
-sudo su
+
 # Set hostname
-hostnamectl set-hostname $node_name
+sudo hostnamectl set-hostname $node_name
 # Download the latest K3s binary
-curl -Lo /usr/local/bin/k3s \
+sudo curl -Lo /usr/local/bin/k3s \
   $download_link \
   && chmod a+x /usr/local/bin/k3s
 
@@ -31,11 +31,11 @@ curl -Lo /usr/local/bin/k3s \
 #nohup k3s server --write-kubeconfig-mode 644 &
 
 # Create kubectl symlink
-ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
+sudo ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
 
 
 echo "nohup k3s agent --server https://$master_node_ip:6443 --token $token &"
 echo "nohup k3s agent --server https://$master_node_ip:6443 --token $token  &" > setupNode.sh
-chmod +x setupNode.sh
-./setupNode.sh
+sudo chmod +x setupNode.sh
+sudo ./setupNode.sh
 exit 0
