@@ -33,3 +33,8 @@ variable "vm_type" {
 variable "key_name" {
   type = string
 }
+
+variable "private_key_path" {
+  type = string
+  description = "for ssh to created host"
+}
