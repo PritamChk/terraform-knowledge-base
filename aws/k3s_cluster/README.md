@@ -1,103 +1,118 @@
-# AWS K3s Cluster with Terraform
+# Terraform AWS K3s Cluster
 
-This module provisions a **lightweight Kubernetes (K3s) cluster on AWS** using Terraform. It is part of the [terraform-knowledge-base](https://github.com/PritamChk/terraform-knowledge-base) repository and is designed to serve as a reusable, configurable template for deploying K3s clusters in cloud environments.
+This Terraform module deploys a lightweight K3s Kubernetes cluster on AWS. It provisions a master node and a worker node, and configures them to form a cluster.
 
----
+![K3s Logo](https://k3s.io/img/logo.svg)
 
-## 🚀 Features
+## Features
 
-- Automated provisioning of **EC2 instances** for K3s master and worker nodes.
-- Configurable **cluster size** and **instance types**.
-- Secure networking with **VPC, subnets, and security groups**.
-- Bootstraps **K3s installation** via cloud-init or user data scripts.
-- Outputs cluster connection details for easy access.
+-   **Automated Cluster Setup**: Provisions EC2 instances and bootstraps a K3s cluster with one master and one worker node.
+-   **Simple & Fast**: Get a Kubernetes cluster running in minutes.
+-   **Customizable**: Easily configure the instance types, AMI, and other parameters.
+-   **Secure**: Uses SSH for provisioning and retrieves the K3s token securely.
 
----
+## Architecture
 
-## 📦 Prerequisites
+The module creates the following resources:
 
-Before using this module, ensure you have:
+-   An EC2 instance for the K3s master node.
+-   An EC2 instance for the K3s worker node.
+-   A `null_resource` to provision the master node using `remote-exec` and `local-exec` to retrieve the K3s token.
+-   A `null_resource` to provision the worker node and join it to the cluster using the retrieved token.
 
-- **Terraform v1.3+**
-- An **AWS account** with appropriate IAM permissions
-- **AWS CLI** configured locally
-- Basic knowledge of **Kubernetes** and **Terraform**
+## Prerequisites
 
----
+-   Terraform v1.0+
+-   An AWS account with credentials configured.
+-   An existing SSH key pair in your AWS account.
+-   A security group that allows SSH access (port 22) and K3s traffic (port 6443) from your IP address.
 
-## ⚙️ Usage
+For lab/learning purposes, you can allow all inbound and outbound traffic in your default security group.
 
-```hcl
-module "k3s_cluster" {
-  source = "github.com/PritamChk/terraform-knowledge-base/aws/k3s_cluster"
+![Security Group Inbound Rules](./imgs/image.png)
+![Security Group Outbound Rules](./imgs/image_2.png)
 
-  region          = "ap-south-1"
-  cluster_name    = "demo-k3s"
-  instance_type   = "t3.medium"
-  ssh_key_name    = "my-keypair"
-}
-```
+## Getting Started
 
-After applying:
+1.  **Clone the repository:**
 
-```bash
-terraform init
-terraform apply
-```
+    ```bash
+    git clone https://github.com/PritamChk/terraform-knowledge-base.git
+    cd terraform-knowledge-base/aws/k3s_cluster
+    ```
 
-You’ll get outputs such as:
+2.  **Configure your variables:**
 
-- Master node public IP
-- Worker node IPs
-- SSH connection string
-- Kubeconfig path (if configured)
+    Create a `terraform.tfvars` file and provide values for the required variables:
 
----
+    ```hcl
+    region           = "ap-south-1"
+    access_key       = "YOUR_AWS_ACCESS_KEY"
+    secret           = "YOUR_AWS_SECRET_KEY"
+    os               = "ami-0f5ee92e2d63afc18" // Example: Amazon Linux 2 AMI
+    vm_type          = "t3.medium"
+    key_name         = "your-ssh-key-name"
+    private_key_path = "/path/to/your/private/key.pem"
+    ```
 
-## 📂 Repository Structure
+3.  **Initialize and apply Terraform:**
 
-```
-aws/k3s_cluster/
-├── main.tf          # Core resources (EC2, networking, K3s bootstrap)
-├── variables.tf     # Input variables for customization
-├── outputs.tf       # Useful outputs (IPs, kubeconfig, etc.)
-├── provider.tf      # AWS provider configuration
-└── README.md        # Documentation (this file)
-```
+    ```bash
+    terraform init
+    terraform apply
+    ```
 
----
+## Configuration
 
-## 🔧 Configuration Options
+### Input Variables
 
-| Variable        | Description                          | Default       |
-| --------------- | ------------------------------------ | ------------- |
-| `region`        | AWS region for deployment            | `ap-south-1`  |
-| `cluster_name`  | Name prefix for resources            | `k3s-cluster` |
-| `master_count`  | Number of master nodes               | `1`           |
-| `worker_count`  | Number of worker nodes               | `2`           |
-| `instance_type` | EC2 instance type                    | `t3.medium`   |
-| `ssh_key_name`  | Existing AWS key pair for SSH access | `null`        |
+| Name               | Description                                       | Type         | Default             | Required |
+| ------------------ | ------------------------------------------------- | ------------ | ------------------- | :------: |
+| `region`           | The AWS region to deploy the resources in.        | `string`     | `"ap-south-1"`      |    no    |
+| `access_key`       | Your AWS access key.                              | `string`     | -                   |   yes    |
+| `secret`           | Your AWS secret key.                              | `string`     | -                   |   yes    |
+| `master_vm_tag`    | A map of tags to apply to the master EC2 instance. | `map(string)`| `{ Name = "k3s-master-node" }` |    no    |
+| `worker_vm_tag`    | A map of tags to apply to the worker EC2 instance. | `map(string)`| `{ Name = "k3s-worker-node" }` |    no    |
+| `os`               | The AMI ID for the EC2 instances.                 | `string`     | -                   |   yes    |
+| `vm_type`          | The instance type for the EC2 instances.          | `string`     | -                   |   yes    |
+| `key_name`         | The name of the SSH key pair to use.              | `string`     | -                   |   yes    |
+| `private_key_path` | The local path to your private SSH key.           | `string`     | -                   |   yes    |
+| `k3s_token`        | The K3s token for joining worker nodes.           | `string`     | `""`                |    no    |
 
----
+### Outputs
 
-## 📖 Notes
+| Name                    | Description                          |
+| ----------------------- | ------------------------------------ |
+| `master_node_public_ip` | The public IP address of the master node. |
+| `worker_node_public_ip` | The public IP address of the worker node. |
 
-- K3s is a **lightweight Kubernetes distribution** ideal for dev/test clusters and edge workloads.
-- This setup is **not production-hardened**; for production, consider HA masters, private networking, and managed Kubernetes (EKS).
-- Ensure your **AWS key pair** exists in the target region before applying.
+## Cluster Access
 
----
+1.  **SSH into the master node:**
 
-## 🛠️ Future Improvements
+    ```bash
+    ssh -i /path/to/your/private/key.pem ec2-user@<master_node_public_ip>
+    ```
 
-- Add support for **multi-master HA clusters**
-- Integrate with **Terraform remote state**
-- Optionally configure **Load Balancer + Ingress**
-- Automated **kubeconfig export**
+2.  **Use `kubectl`:**
 
----
+    Once on the master node, you can use `kubectl` to interact with your cluster. The `master.sh` script sets up aliases for common commands:
 
-## 👨‍💻 Author
+    ```bash
+    # Check the nodes
+    nodes
 
-Created by [PritamChk](https://github.com/PritamChk)  
-Part of the **Terraform Knowledge Base** project.
+    # List pods
+    pods
+
+    # List namespaces
+    ns
+    ```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
