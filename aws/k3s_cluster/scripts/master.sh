@@ -46,7 +46,7 @@ sudo chmod +x stopk3s_cluster.sh
 
 ## Generate and display the node token for worker nodes to join the cluster
 echo "K3s Master Node Token (use this to join worker nodes to the cluster):"
-cat /var/lib/rancher/k3s/server/node-token > /tmp/token.txt
-cat /tmp/token.txt
+sudo cat /var/lib/rancher/k3s/server/node-token > /tmp/token.txt
+sudo cat /tmp/token.txt
 
 exit 0
