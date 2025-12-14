@@ -2,7 +2,6 @@
 
 This Terraform module deploys a lightweight K3s Kubernetes cluster on AWS. It provisions a master node and a worker node, and configures them to form a cluster.
 
-![K3s Logo](https://k3s.io/img/logo.svg)
 
 ## Features
 
@@ -113,6 +112,3 @@ For lab/learning purposes, you can allow all inbound and outbound traffic in you
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
