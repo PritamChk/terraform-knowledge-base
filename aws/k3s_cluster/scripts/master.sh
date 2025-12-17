@@ -77,5 +77,5 @@ alias nodes='kubectl get nodes'\n
 alias pods='kubectl get pods'\n
 alias ns='kubectl get namespace'\n
 """
-echo -e $ALIAS | tr -d '^ ' >> /home/ec2-user/.bash_profile
+echo -e $ALIAS | sed 's/^\s//' >> /home/ec2-user/.bash_profile
 exit 0
