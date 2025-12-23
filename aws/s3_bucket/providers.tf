@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     bucket = "tf-learning-s3b-23dec25"
     key    = "dev_tfstates/terraform.tfstate"
-    region = "${var.region}"
+    region = "ap-south-1"
     encrypt = true
     use_lockfile = true
   }
