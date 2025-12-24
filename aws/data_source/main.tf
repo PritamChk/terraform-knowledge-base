@@ -16,6 +16,6 @@ resource "aws_instance" "vm2" {
   ami = data.aws_ami.aws_linux.id
   instance_type = "t2.micro"
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
