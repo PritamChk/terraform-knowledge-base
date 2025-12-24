@@ -25,3 +25,5 @@ alias tfpo='terraform plan -var secret_key=$AWS_SECRET_KEY -var access_key=$AWS_
 alias tfa='terraform apply -var secret_key=$AWS_SECRET_KEY -var access_key=$AWS_ACCESS_KEY -var region=$AWS_DEFAULT_REGION'
 alias tfd='terraform destroy -var secret_key=$AWS_SECRET_KEY -var access_key=$AWS_ACCESS_KEY --auto-approve'
 alias tfv='terraform validate'
+alias tfr='terraform refresh -var access_key=$AWS_ACCESS_KEY -var secret_key=$AWS_SECRET_KEY'
+
