@@ -10,7 +10,7 @@ sudo echo "Setting up Server Hostname and Timezone"
 sudo hostnamectl set-hostname ${server_name}
 sudo timedatectl  set-timezone "${time_zone}"
 sudo timedatectl  status
-sudo echo "${server_pub_ip} plane-node-1" >> /etc/hosts
+sudo echo "${server_pub_ip} ${server_name}" >> /etc/hosts
 sudo echo "Date Time : `date` | Timezone : $(sudo timedatectl  status | grep -i "time zone" | tr -d ' ') | Hostname : $(hostname) | Server IP : $(hostname -i)"
 
 ##############################################
