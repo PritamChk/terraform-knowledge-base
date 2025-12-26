@@ -24,11 +24,7 @@ resource "aws_instance" "pmapp_vm" {
   instance_type               = var.vm_type
   key_name                    = var.vm_key_name
   associate_public_ip_address = true
-  tags = {
-    Name          = "pmapp-vm"
-    environment   = "dev"
-    deployer_type = "terraform"
-  }
+  tags = var.vm_tags
   lifecycle {
     prevent_destroy = true
   }

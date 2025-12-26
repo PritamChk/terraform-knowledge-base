@@ -24,3 +24,13 @@ variable "vm_key_name" {
   description = "pem key to ssh to server"
 }
 
+
+variable "vm_tags" {
+  type = map(string)
+  description = "Tags can have instance name , env details, created_by:"
+  default = {
+    Name          = "pmapp-vm"
+    environment   = "dev"
+    created_by = "terraform"
+  }
+}
