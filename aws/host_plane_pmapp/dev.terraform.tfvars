@@ -1,0 +1,1 @@
+vm_key_name = "aws-k3s-key"

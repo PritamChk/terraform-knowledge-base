@@ -11,6 +11,7 @@ variable "secret_key" {
 
 variable "vm_type" {
   type        = string
+  default = "t3.medium"
   description = "It must of minimum t3.medium/t3a.medium to install docker engine"
   validation {
     condition     = can(regex("^t3\\.(medium|large|xlarge|2xlarge)$", var.vm_type))
