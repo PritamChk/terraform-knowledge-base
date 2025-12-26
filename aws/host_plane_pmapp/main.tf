@@ -35,7 +35,7 @@ resource "aws_instance" "pmapp_vm" {
     private_key = file(var.vm_private_key_path)
     host        = self.public_ip
   }
-  
+
   provisioner "file" {
     source = "scripts/install_plane.sh"
     destination = "/home/ec2-user/install_plane.sh"
@@ -46,8 +46,6 @@ resource "aws_instance" "pmapp_vm" {
       "chmod +x /home/ec2-user/install_plane.sh",
       "sudo /home/ec2-user/install_plane.sh"
     ]
-    max_retries = 1
-    timeout     = "15m"
   }
 
 }
