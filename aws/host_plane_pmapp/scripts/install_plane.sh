@@ -20,20 +20,21 @@ echo "Installing Docker"
 sudo yum install -y docker
 sudo usermod -aG docker ec2-user
 
-sudo echo "Installing Docker Compose"
-sudo mkdir -p ~/.docker/cli-plugins
-sudo curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 \
+echo "Installing Docker Compose"
+mkdir -p ~/.docker/cli-plugins
+curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 \
   -o ~/.docker/cli-plugins/docker-compose
-sudo chmod +x ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
 
-sudo echo "Starting Docker Service"
+echo "Starting Docker Service"
 sudo systemctl start docker
 sudo systemctl enable docker
 
 sudo echo "Docker Version:"
 sudo docker --version
-sudo echo "Docker Compose Version:"
-sudo docker-compose --version    
+docker --version
+echo "Docker Compose Version:"
+docker compose --version    
 ##############################################
 
 ## S3: Install and Setup Plane Self-Hosted Control Plane
