@@ -1,3 +1,10 @@
+locals {
+  server_name = var.script_params["server_name"]
+  time_zone   = var.script_params["time_zone"]
+  http_port   = var.script_params["http_port"]
+  https_port  = var.script_params["https_port"]
+}
+
 # Learning of data source aws_ami --> fetch details of latest ami for aws 2023 linux
 data "aws_ami" "ec2_ami" {
   most_recent = true
@@ -48,7 +55,7 @@ resource "null_resource" "install_pmapp" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ec2-user/install_plane.sh",
-      "sudo /home/ec2-user/install_plane.sh ${var.script_params["server_name"]} ${var.script_params["time_zone"]} ${var.script_params["http_port"]} ${var.script_params["https_port"]} ${self.public_ip}"
+      "sudo /home/ec2-user/install_plane.sh ${local.server_name} ${local.time_zone} ${local.http_port} ${local.https_port} ${aws_instance.pmapp_vm.public_ip}"
     ]
   }
 }
