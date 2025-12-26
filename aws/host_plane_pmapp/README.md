@@ -18,4 +18,12 @@ link : [Reference to HCL Doc](https://developer.hashicorp.com/packer/docs/templa
 
 ### 6. All TF file formatting
 
+> Before Formatting
+> ![b4-fmt-code-404](image-2.png)
+
+> After Formatting
+> ![after-fmt-404](image-1.png)
+>
+> ![after-fmt-code-404](image-3.png)
+
 ### 7. terraform workspace for environment specific

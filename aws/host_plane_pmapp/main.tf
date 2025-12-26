@@ -8,23 +8,23 @@ data "aws_ami" "ec2_ami" {
     values = ["al2023-*-x86_64"]
   }
   filter {
-    name = "virtualization-type"
+    name   = "virtualization-type"
     values = ["hvm"]
   }
 }
 
 ## Creating EC2 instance with variable vm_type
 resource "aws_instance" "pmapp_vm" {
-    ami = data.aws_ami.ec2_ami.id
-    instance_type = var.vm_type
-    key_name =  var.vm_key_name
-    associate_public_ip_address = true
-    tags = {
-        Name = "pmapp-vm"
-        environment = "dev"
-        deployer_type="terraform"
-    }
-    lifecycle {
-      prevent_destroy = true
-    }
+  ami                         = data.aws_ami.ec2_ami.id
+  instance_type               = var.vm_type
+  key_name                    = var.vm_key_name
+  associate_public_ip_address = true
+  tags = {
+    Name          = "pmapp-vm"
+    environment   = "dev"
+    deployer_type = "terraform"
+  }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
