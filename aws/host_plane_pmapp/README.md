@@ -32,3 +32,6 @@ link : [Reference to HCL Doc](https://developer.hashicorp.com/packer/docs/templa
   - ![ws-tf-2-404](image-7.png)
 - Complex Variable Tag
   - ![tag-complex-data-404](image-8.png)
+- Issue faced with docker compose installation and check
+- Finally app is up
+  - ![app-up-404](image-9.png)
