@@ -35,3 +35,4 @@ link : [Reference to HCL Doc](https://developer.hashicorp.com/packer/docs/templa
 - Issue faced with docker compose installation and check
 - Finally app is up
   - ![app-up-404](image-9.png)
+  - ![app-up-large-time-404](image-10.png)
