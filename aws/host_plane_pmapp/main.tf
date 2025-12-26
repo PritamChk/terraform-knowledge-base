@@ -55,7 +55,7 @@ resource "null_resource" "install_pmapp" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ec2-user/install_plane.sh",
-      "sudo /home/ec2-user/install_plane.sh ${local.server_name} ${local.time_zone} ${local.http_port} ${local.https_port} ${aws_instance.pmapp_vm.public_ip}"
+      "sudo /home/ec2-user/install_plane.sh ${local.server_name} ${local.time_zone} ${aws_instance.pmapp_vm.public_ip} ${local.http_port} ${local.https_port}"
     ]
   }
 }
