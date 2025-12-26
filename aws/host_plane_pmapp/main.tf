@@ -28,8 +28,12 @@ resource "aws_instance" "pmapp_vm" {
   lifecycle {
     prevent_destroy = true
   }
+}
 
-  connection {
+resource "null_resource" "install_pmapp" {
+   depends_on = [ aws_instance.pmapp_vm ]
+
+   connection {
     type        = "ssh"
     user        = "ec2-user"
     private_key = file(var.vm_private_key_path)
@@ -44,8 +48,7 @@ resource "aws_instance" "pmapp_vm" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ec2-user/install_plane.sh",
-      "sudo /home/ec2-user/install_plane.sh"
+      "sudo /home/ec2-user/install_plane.sh ${var.script_params["server_name"]} ${var.script_params["time_zone"]} ${var.script_params["http_port"]} ${var.script_params["https_port"]} ${self.public_ip}"
     ]
   }
-
 }

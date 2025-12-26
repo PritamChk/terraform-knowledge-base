@@ -41,3 +41,14 @@ variable "vm_private_key_path" {
   default = "/home/ec2-user/.ssh/my-key.ppy"
   description = "Path to the private key file to ssh to the instance"
 }
+
+variable "script_params" {
+  type        = map(string)
+  default     = {
+    server_name="pmapp-server"
+    time_zone="Asia/Kolkata" 
+    http_port="9000"
+    https_port="9443"
+  }
+  description = "Parameters to be passed to the install script"
+}
