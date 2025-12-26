@@ -6,3 +6,5 @@ vm_tags = {
   created_by = "terraform"
   author = "team-alpha"
 }
+
+private_key_path = "/home/ec2-user/.ssh/aws-k3s-key.pem"

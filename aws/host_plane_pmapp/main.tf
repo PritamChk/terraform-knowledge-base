@@ -28,4 +28,26 @@ resource "aws_instance" "pmapp_vm" {
   lifecycle {
     prevent_destroy = true
   }
+
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file(var.vm_private_key_path)
+    host        = self.public_ip
+  }
+  
+  provisioner "file" {
+    source = "scripts/install_plane.sh"
+    destination = "/home/ec2-user/install_plane.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ec2-user/install_plane.sh",
+      "sudo /home/ec2-user/install_plane.sh"
+    ]
+    max_retries = 1
+    timeout     = "15m"
+  }
+
 }

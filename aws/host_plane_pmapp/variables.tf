@@ -34,3 +34,10 @@ variable "vm_tags" {
     created_by = "terraform"
   }
 }
+
+
+variable "vm_private_key_path" {
+  type = string
+  default = "/home/ec2-user/.ssh/my-key.ppy"
+  description = "Path to the private key file to ssh to the instance"
+}
