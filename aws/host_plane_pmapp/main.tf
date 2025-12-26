@@ -13,6 +13,11 @@ data "aws_ami" "ec2_ami" {
   }
 }
 
+## Key Pair Exists check
+data "aws_key_pair" "pmapp_key" {
+  key_name = var.vm_key_name
+}
+
 ## Creating EC2 instance with variable vm_type
 resource "aws_instance" "pmapp_vm" {
   ami                         = data.aws_ami.ec2_ami.id
