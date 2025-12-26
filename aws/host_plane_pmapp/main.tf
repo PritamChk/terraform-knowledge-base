@@ -24,24 +24,24 @@ resource "aws_instance" "pmapp_vm" {
   instance_type               = var.vm_type
   key_name                    = var.vm_key_name
   associate_public_ip_address = true
-  tags = var.vm_tags
+  tags                        = var.vm_tags
   lifecycle {
     prevent_destroy = true
   }
 }
 
 resource "null_resource" "install_pmapp" {
-   depends_on = [ aws_instance.pmapp_vm ]
+  depends_on = [aws_instance.pmapp_vm]
 
-   connection {
+  connection {
     type        = "ssh"
     user        = "ec2-user"
     private_key = file(var.vm_private_key_path)
-    host        = self.public_ip
+    host        = aws_instance.pmapp_vm.public_ip
   }
 
   provisioner "file" {
-    source = "scripts/install_plane.sh"
+    source      = "scripts/install_plane.sh"
     destination = "/home/ec2-user/install_plane.sh"
   }
 
