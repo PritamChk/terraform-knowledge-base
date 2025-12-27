@@ -35,7 +35,7 @@ resource "aws_instance" "pmapp_vm" {
   vpc_security_group_ids      = [aws_security_group.pm_app_sg.id]
   tags                        = var.vm_tags
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 

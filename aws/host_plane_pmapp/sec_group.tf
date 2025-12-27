@@ -10,10 +10,18 @@ resource "aws_security_group" "pm_app_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "pm_app_sg_ipv4" {
   security_group_id = aws_security_group.pm_app_sg.id
-  cidr_ipv4         = aws_vpc.pmapp_vpc.cidr_block
+  cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   ip_protocol       = "tcp"
   to_port           = 80
+}
+
+resource "aws_vpc_security_group_ingress_rule" "pm_app_sg_ssh" {
+  security_group_id = aws_security_group.pm_app_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 22
+  ip_protocol       = "ssh"
+  to_port           = 22
 }
 
 
