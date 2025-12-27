@@ -1,4 +1,14 @@
+### Goal : 1
+
+---
+
+> Architecture I'm trying to achieve here:
+>
+> ![arch-diag-1-404](image-11.png)
+
 ### What Learnings I'm using here
+
+---
 
 - Learning of data source aws_ami --> fetch details of latest ami for aws 2023 linux
 
