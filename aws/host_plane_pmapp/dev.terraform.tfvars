@@ -12,6 +12,6 @@ vm_private_key_path = "/home/ec2-user/.ssh/aws-k3s-key.pem"
 script_params = {
   server_name = "plane-app-vm-1"
   time_zone   = "Asia/Thimphu"
-  http_port   = "9090"
+  http_port   = "80"
   https_port  = "9443"
 }

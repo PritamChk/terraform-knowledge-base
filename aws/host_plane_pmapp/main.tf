@@ -31,9 +31,11 @@ resource "aws_instance" "pmapp_vm" {
   instance_type               = var.vm_type
   key_name                    = var.vm_key_name
   associate_public_ip_address = true
+  subnet_id                   = aws_subnet.pmapp_public_subnet_1a.id
+  vpc_security_group_ids      = [aws_security_group.pm_app_sg.id]
   tags                        = var.vm_tags
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
