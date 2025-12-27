@@ -1,9 +1,9 @@
 ### VPC ######
 resource "aws_vpc" "pmapp_vpc" {
-  cidr_block       = "10.40.0.0/24"
-  instance_tenancy = "default"
+  cidr_block           = "10.40.0.0/24"
+  instance_tenancy     = "default"
   enable_dns_hostnames = true
-  
+
   tags = {
     Name = "pmapp_vpc"
   }
@@ -29,9 +29,9 @@ resource "aws_route_table" "pmapp_public_rt" {
 
 ### Create public subnet ######
 resource "aws_subnet" "pmapp_public_subnet_1a" {
-  vpc_id     = aws_vpc.pmapp_vpc.id
-  cidr_block = "10.40.0.0/26"
-  availability_zone = "${var.region}a"
+  vpc_id                  = aws_vpc.pmapp_vpc.id
+  cidr_block              = "10.40.0.0/26"
+  availability_zone       = "${var.region}a"
   map_public_ip_on_launch = true
   tags = {
     Name = "pmapp_public_subnet-1a"
