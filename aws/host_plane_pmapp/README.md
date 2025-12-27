@@ -63,3 +63,14 @@ link : [Reference to HCL Doc](https://developer.hashicorp.com/packer/docs/templa
 ---
 
 ### Key learnings in Goal 2 :
+
+1. **1st** thing I'm working on is the VPC
+    - 
+1. **2nd** thing I'm working on is the Security group 
+    1. This is at EC2 Level
+    - `#` of `Inbound Rule` - 2
+        - `ssh 22`
+        - `port 80` - Incoming traffics
+    - `#` of `Outbound Rules` - Allow all
+    1. So now first find out `Terraform code` from `doc` for creating `sg` 
+       - [Doc Link for : `vpc_security_group`]() 
