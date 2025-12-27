@@ -17,7 +17,3 @@ output "vpc_cidr_block" {
 output "sec_group_id" {
   value = aws_security_group.pm_app_sg.id
 }
-
-output "sec_group_id" {
-  value = aws_security_group.pm_app_sg.id
-}
