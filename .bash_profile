@@ -13,6 +13,11 @@ export AWS_ACCESS_KEY=$(cat ~/.aws_secrets/access_key | base64 -d)
 export AWS_SECRET_KEY=$(cat ~/.aws_secrets/secret_key | base64 -d)
 export AWS_DEFAULT_REGION=$(cat ~/.aws_secrets/default_region | base64 -d)
 
+export TF_VAR_access_key=$(cat ~/.aws_secrets/access_key | base64 -d)
+export TF_VAR_secret_key=$(cat ~/.aws_secrets/secret_key | base64 -d)
+export TF_VAR_region=$(cat ~/.aws_secrets/default_region | base64 -d)
+
+
 alias ll='ls -lrth'
 alias l='ls -lrth'
 alias size='du -sh | sort -hr'

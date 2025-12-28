@@ -1,8 +1,8 @@
 locals {
   users = csvdecode(file("./user-data.csv"))
-  roles = distinct([
+  roles = toset(distinct([
     for u in local.users : u.role
-  ])
+  ]))
 }
 
 resource "aws_iam_group" "groups" {
