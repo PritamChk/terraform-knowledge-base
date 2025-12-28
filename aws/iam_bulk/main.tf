@@ -6,7 +6,7 @@ locals {
 }
 
 resource "aws_iam_group" "groups" {
-  for_each = local.roles
+  for_each = toset(local.roles)
   name     = each.value
   path     = "/groups/project_IAM/"
 }
@@ -27,13 +27,14 @@ resource "aws_iam_user_login_profile" "project_IAM_user_login" {
   for_each                = aws_iam_user.project_IAM_user
   user                    = each.value.name
   password_reset_required = true
+  password_length         = 8
 }
 
 resource "aws_iam_group_membership" "group_users_map" {
 
-  for_each = local.roles
+  for_each = toset(local.roles)
   name     = "group_users_map-${each.value}"
-  group    = aws_iam_group.groups[each.value].name
+  group    = aws_iam_group.groups[each.key].name
   users = [
     for email, user_config in local.users :
     aws_iam_user.project_IAM_user[email].name
