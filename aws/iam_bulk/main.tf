@@ -20,6 +20,7 @@ resource "aws_iam_user" "project_IAM_user" {
   tags = {
     project = "project_IAM"
     email   = each.key
+    role    = each.value.role
   }
 }
 
@@ -36,9 +37,9 @@ resource "aws_iam_group_membership" "group_users_map" {
   name     = "group_users_map-${each.value}"
   group    = aws_iam_group.groups[each.key].name
   users = [
-    for email, user_config in local.users :
-    aws_iam_user.project_IAM_user[email].name
-    if user_config.role == each.value
+    for user in local.users :
+    aws_iam_user.project_IAM_user.name
+    if user.tag["role"] == each.value
   ]
 
 }
