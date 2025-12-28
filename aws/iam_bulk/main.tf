@@ -13,7 +13,7 @@ resource "aws_iam_group" "groups" {
 
 resource "aws_iam_user" "project_IAM_user" {
 
-  for_each = { for user in local.users : user => user.email }
+  for_each = { for user in local.users : user.email => user }
   name     = lower("${each.value.first_name}_${substr(each.value.last_name, 0, 4)}")
   path     = "/${lower(each.value.role)}/"
 
