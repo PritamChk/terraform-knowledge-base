@@ -31,17 +31,13 @@ resource "aws_iam_user_login_profile" "project_IAM_user_login" {
   password_length         = 8
 }
 
-resource "aws_iam_group_membership" "group_users_map" {
+resource "aws_iam_user_group_membership" "group_users_map" {
+  for_each = aws_iam_user.project_IAM_user
 
-  for_each = toset(local.roles)
-  name     = "group_users_map-${each.value}"
-  group    = aws_iam_group.groups[each.key].name
-  users = [
-    for user in local.users :
-    aws_iam_user.project_IAM_user.name
-    if user.tag["role"] == each.value
+  user = each.value.name
+  groups = [
+    aws_iam_group.groups[each.value.tags.role].name
   ]
-
 }
 
 #   pgp_key = "keybase:some_person_that_exists"
