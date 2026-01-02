@@ -3,6 +3,15 @@ Here is a professional `README.md` file for your project. You can save this as `
 ## Excalidraw Design for Base Creation
 ![Quiz App Design 404](./imgs/design_diagram-1.png)
 
+## Final Output
+>1. Landing Page
+>![Landing Page](./imgs/landing_page_1.png)
+>1. Quiz Interface
+>![Quiz Interface](./imgs/Quiz_page.png)
+>1. Result Analysis
+>![Result Analysis](./imgs/result_page.png)  
+
+
 # Generic Quiz Platform 🚀
 
 A lightweight, dynamic, and responsive Quiz Application built with **FastAPI** (Backend) and **Vanilla JS + Tailwind CSS** (Frontend). Designed for flexibility, it supports randomized questions, persistent leaderboards, and detailed result analysis.
