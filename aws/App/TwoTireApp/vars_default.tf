@@ -4,13 +4,6 @@ variable "region" {
   description = "This is to ensure the created objects goes to Mumbai as it is near to Bhutan"
 }
 
-
-variable "region_az_list" {
-  type        = list(string)
-  default     = ["${var.region}a", "${var.region}b"]
-  description = "AZ-a and AZ-b only allowed for now | 03-01-2026"
-}
-
 variable "quiz_vpc_name" {
   type        = string
   default     = "quiz_vpc"

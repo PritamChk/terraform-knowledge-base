@@ -1,6 +1,6 @@
 locals {
   vpc_name               = var.quiz_vpc_name
-  availability_zone_list = var.region_az_list
+  availability_zone_list = ["${var.region}a", "${var.region}b"]
   cidr                   = var.quiz_vpc_cidr
   public_subnets         = var.quiz_vpc_public_subnet_cidr_block_list
   private_subnets        = var.quiz_vpc_private_subnet_cidr_block_list
