@@ -94,12 +94,30 @@ module "public_ec2_sg" {
   egress_cidr_blocks = ["0.0.0.0/0"]
 }
 
-module "load_balancer" {
-  source = "terraform-aws-modules/security-group/aws"
+# module "load_balancer" {
+#   source = "terraform-aws-modules/security-group/aws"
 
-  name                = "${var.quiz_vpc_name}-lb-sg"
-  description         = "Security group for LB to communicate with HTTP port open within VPC"
-  vpc_id              = module.app_vpc.vpc_id
+#   name                = "${var.quiz_vpc_name}-lb-sg"
+#   description         = "Security group for LB to communicate with HTTP port open within VPC"
+#   vpc_id              = module.app_vpc.vpc_id
+#   ingress_cidr_blocks = ["0.0.0.0/0"]
+#   ingress_rules       = ["http-80-tcp"]
+# }
+
+module "load_balancer" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.1.0"
+
+  name        = "${var.quiz_vpc_name}-lb-sg"
+  description = "Security group for LB to communicate with HTTP port open within VPC"
+  vpc_id      = module.app_vpc.vpc_id
+
+  # 1. INGRESS: Allow the world to hit the ALB
   ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_rules       = ["http-80-tcp"]
+
+  # 2. EGRESS: Allow the ALB to forward traffic to your App Servers
+  # Without this, the ALB traps the request and cannot pass it on.
+  egress_rules       = ["all-all"]
+  egress_cidr_blocks = ["0.0.0.0/0"]
 }
