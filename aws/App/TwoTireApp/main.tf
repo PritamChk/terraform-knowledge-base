@@ -24,3 +24,73 @@
 #   version = "10.4.0"
 # }
 ###### END : BEFORE INIT MODULE ENLIST TO DOWNLOAD #######
+
+# EC2 -> needed for 2 private and 1 jump-server for ssh with public ip
+# Learning of data source aws_ami --> fetch details of latest ami for aws 2023 linux
+
+locals {
+  key_name = "aws-k3s-key"
+  app_vm   = "private-quiz-app-vm"
+}
+
+data "aws_ami" "ec2_ami" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["al2023-*-x86_64"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+} # =========================================================
+# 1. PUBLIC BASTION (Single Instance)
+# =========================================================
+module "bastion" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "5.5.0"
+  ami     = data.aws_ami.ec2_ami
+  name    = "${var.quiz_vpc_name}-bastion"
+
+  # Bastion goes into the FIRST public subnet
+  subnet_id                   = module.app_vpc.public_subnets[0]
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [module.public_ec2_sg.security_group_id]
+
+  instance_type = "t2.micro"
+  key_name      = "aws-k3s-key" # Update this
+
+  tags = {
+    Role = "Bastion"
+  }
+}
+
+# =========================================================
+# 2. PRIVATE APP SERVERS (One per Private Subnet)
+# =========================================================
+module "app_servers" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "5.5.0"
+  ami     = data.aws_ami.ec2_ami
+
+  # LOGIC:
+  # The module creates 1 instance per call. 
+  # We use 'for_each' to call the module once for every private subnet you have.
+  for_each = toset(module.app_vpc.private_subnets)
+
+  name = "${var.quiz_vpc_name}-app-${each.key}"
+
+  # 'each.value' gives us the specific Subnet ID for this iteration
+  subnet_id                   = each.value
+  associate_public_ip_address = false
+  vpc_security_group_ids      = [module.private_ec2_sg.security_group_id]
+
+  instance_type = "t2.micro"
+  key_name      = "aws-k3s-key" # Same key is fine
+
+  tags = {
+    Role = "${local.app_vm}"
+    AZ   = each.key # specific tag to know which subnet it is in
+  }
+}
