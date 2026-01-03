@@ -62,13 +62,10 @@ module "alb" {
 # 6. ATTACHMENT (The "Glue")
 # -------------------------------------------------------------------
 resource "aws_lb_target_group_attachment" "app_server_attachment" {
-  # Loop through every App Server created in ec2.tf
-  for_each = module.app_servers
+  # CHANGE THIS: Point to the new resource
+  for_each = aws_instance.app_servers
 
-  # v9 output change: target_groups is now a map
   target_group_arn = module.alb.target_groups["app_targets"].arn
-
-  # The Instance ID
-  target_id = each.value.id
-  port      = 8000
+  target_id        = each.value.id
+  port             = 8000
 }

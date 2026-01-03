@@ -47,50 +47,50 @@ data "aws_ami" "ec2_ami" {
 } # =========================================================
 # 1. PUBLIC BASTION (Single Instance)
 # =========================================================
-module "bastion" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "5.5.0"
-  ami     = data.aws_ami.ec2_ami
-  name    = "${var.quiz_vpc_name}-bastion"
+resource "aws_instance" "bastion" {
+  # 1. Use the AMI we fetched above
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
 
-  # Bastion goes into the FIRST public subnet
-  subnet_id                   = module.app_vpc.public_subnets[0]
+  # 2. Networking (Public)
+  # Place in the first Public Subnet
+  subnet_id = module.app_vpc.public_subnets[0]
+  # IMPORTANT: We need this to be true for the Jumpbox
   associate_public_ip_address = true
   vpc_security_group_ids      = [module.public_ec2_sg.security_group_id]
 
-  instance_type = "t2.micro"
-  key_name      = local.key_name # Update this
+  # 3. Key (Update this!)
+  key_name = local.key_name
 
   tags = {
+    Name = "${var.quiz_vpc_name}-bastion"
     Role = "Bastion"
   }
+
 }
+
 
 # =========================================================
 # 2. PRIVATE APP SERVERS (One per Private Subnet)
 # =========================================================
-module "app_servers" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "5.5.0"
-  ami     = data.aws_ami.ec2_ami
-
-  # LOGIC:
-  # The module creates 1 instance per call. 
-  # We use 'for_each' to call the module once for every private subnet you have.
+resource "aws_instance" "app_servers" {
+  # Create one instance for every Private Subnet found
   for_each = toset(module.app_vpc.private_subnets)
 
-  name = "${var.quiz_vpc_name}-app-${each.key}"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
 
-  # 'each.value' gives us the specific Subnet ID for this iteration
-  subnet_id                   = each.value
-  associate_public_ip_address = false
+  # 1. Networking (Private)
+  subnet_id                   = each.value # The subnet ID from the loop
+  associate_public_ip_address = false      # No public IP for private apps
   vpc_security_group_ids      = [module.private_ec2_sg.security_group_id]
 
-  instance_type = "t2.micro"
-  key_name      = local.key_name # Same key is fine
+  # 2. Key
+  key_name = local.key_name
 
   tags = {
-    Role = "${local.app_vm}"
-    AZ   = each.key # specific tag to know which subnet it is in
+    Name = "${var.quiz_vpc_name}-app-${each.key}"
+    Role = "App-Server"
   }
 }
+
