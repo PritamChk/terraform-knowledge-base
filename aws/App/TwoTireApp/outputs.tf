@@ -19,9 +19,3 @@ output "app_private_ips" {
   # Since we used 'for_each' on the module, we loop through the results to get a list
   value = [for instance in module.app_servers : instance.private_ip]
 }
-
-# 3. Load Balancer DNS (From previous step, good to keep)
-output "alb_dns_name" {
-  description = "The DNS name of the load balancer"
-  value       = module.alb.dns_name
-}
