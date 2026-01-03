@@ -27,3 +27,6 @@
       1. either use dynamic variables (in `list`) for az names like **`${region}a`** and **`${region}b`**
       1. Or else go for extract that az details dynamically using `data` `block` in `terraform`
       1. for time being chosen to move forward with `variable: list(string)` with string interpolation strategy.
+   1. While writing VPC - got error on CIDR block related :
+      1. ![cidr-math-issue-404](imgs/cidr_math_issue.png)
+      1. understood the CIDR range and cidr math properly and changed the code accordingly.

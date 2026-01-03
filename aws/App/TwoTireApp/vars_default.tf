@@ -21,7 +21,7 @@ variable "quiz_vpc_cidr" {
 
 variable "quiz_vpc_private_subnet_cidr_block_list" {
   type    = list(string)
-  default = ["10.0.1.0/18", "10.0.3.0/18"]
+  default = ["10.0.0.0/18", "10.0.64.0/18"]
   validation {
     # condition = can(regex("^([0-9]{1,3}\.){3}[0-9]{1,3}\/(1[7-9]|2[0-8])$",var.quiz_vpc_cidr))
 
@@ -35,7 +35,7 @@ variable "quiz_vpc_private_subnet_cidr_block_list" {
 
 variable "quiz_vpc_public_subnet_cidr_block_list" {
   type    = list(string)
-  default = ["10.0.2.0/18", "10.0.4.0/18"]
+  default = ["10.0.0.0/24", "10.0.1.0/24"]
   validation {
     # condition = can(regex("^([0-9]{1,3}\.){3}[0-9]{1,3}\/(1[7-9]|2[0-8])$",var.quiz_vpc_cidr))
 
