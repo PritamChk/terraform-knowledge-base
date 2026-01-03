@@ -1,3 +1,7 @@
+# 1. Get the "ID Card" for AWS S3
+data "aws_prefix_list" "s3" {
+  name = "com.amazonaws.${var.region}.s3"
+}
 
 module "ec2_sg_quiz_vpc" {
   source = "terraform-aws-modules/security-group/aws"
@@ -15,6 +19,16 @@ module "ec2_sg_quiz_vpc" {
       protocol    = "tcp"
       description = "quiz-app-service ports"
       cidr_blocks = join(",", module.app_vpc.public_subnets_cidr_blocks)
+    }
+  ]
+  ## For S3
+  egress_with_prefix_list_ids = [
+    {
+      from_port       = 443
+      to_port         = 443
+      protocol        = "tcp"
+      prefix_list_ids = data.aws_prefix_list.s3.id
+      description     = "Allow secure access to S3 Gateway Endpoint"
     }
   ]
 }
