@@ -49,7 +49,7 @@ data "aws_ami" "ec2_ami" {
 # =========================================================
 resource "aws_instance" "bastion" {
   # 1. Use the AMI we fetched above
-  ami           = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.ec2_ami.id
   instance_type = "t2.micro"
 
   # 2. Networking (Public)
@@ -77,7 +77,7 @@ resource "aws_instance" "app_servers" {
   # Create one instance for every Private Subnet found
   for_each = toset(module.app_vpc.private_subnets)
 
-  ami           = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.ec2_ami.id
   instance_type = "t2.micro"
 
   # 1. Networking (Private)
