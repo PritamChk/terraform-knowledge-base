@@ -29,3 +29,26 @@ module "app_vpc" {
 
   tags = local.vpc_tags
 }
+
+module "vpc_endpoints" {
+  source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+  
+  # Link to your existing VPC
+  vpc_id = module.app_vpc.vpc_id
+
+  endpoints = {
+    s3 = {
+      # 1. Specify the Service
+      service = "s3"
+      
+      # 2. CRITICAL: Force it to be a Gateway (Standard/Free type)
+      service_type = "Gateway"
+
+      route_table_ids = module.app_vpc.private_route_table_ids
+
+      tags = {
+        Name = "${var.quiz_vpc_name}-s3-endpoint"
+      }
+    }
+  }
+}
