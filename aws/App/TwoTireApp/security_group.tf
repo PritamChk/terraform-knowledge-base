@@ -25,6 +25,6 @@ module "load_balancer" {
   name                = "${var.quiz_vpc_name}-lb-sg"
   description         = "Security group for LB to communicate with HTTP port open within VPC"
   vpc_id              = module.app_vpc.vpc_id
-  ingress_cidr_blocks = "0.0.0.0/0"
+  ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_rules       = ["http-80-tcp"]
 }
