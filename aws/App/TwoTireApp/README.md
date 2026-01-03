@@ -15,3 +15,11 @@
    1. `s3`
 1. Terraform `init` o/p:
    1. ![init-404](imgs/tf_init.png)
+1. create a terraform workspace for stg environment
+    1. `terraform workspace new`
+    1. ![ws-create-404](imgs/ws_create.png)
+    1. Switch workspace
+    1. `terraform workspace select <ws-name>`
+    1. ![ws-select-404](imgs/ws_select.png)
+1. Start Writing code in below sequence 
+    1. code for VPC
