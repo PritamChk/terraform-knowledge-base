@@ -8,36 +8,27 @@ module "private_ec2_sg" {
   version = "5.1.0"
 
   name        = "${var.quiz_vpc_name}-private-sg"
-  description = "Allow Access ONLY from Public EC2"
+  description = "Allow Access from Bastion (SSH) and ALB (App)"
   vpc_id      = module.app_vpc.vpc_id
 
-  # --- INGRESS (Keep as is) ---
   computed_ingress_with_source_security_group_id = [
+    # 1. Allow SSH from Bastion (Keep this)
     {
       rule                     = "ssh-tcp"
       source_security_group_id = module.public_ec2_sg.security_group_id
     },
+    # 2. FIX: Allow HTTP 8000 from Load Balancer
     {
-      rule                     = "http-8080-tcp" # Ensure this matches your app port (e.g. 8000)
-      source_security_group_id = module.public_ec2_sg.security_group_id
+      from_port                = 8000
+      to_port                  = 8000
+      protocol                 = "tcp"
+      description              = "Allow traffic from ALB"
+      source_security_group_id = module.load_balancer.security_group_id # <--- Critical Change
     }
   ]
   number_of_computed_ingress_with_source_security_group_id = 2
 
-  # --- EGRESS (The Fix) ---
-
-  #   # 1. Keep S3 Access (You already have this)
-  #   egress_with_prefix_list_ids = [
-  #     {
-  #       from_port       = 443
-  #       to_port         = 443
-  #       protocol        = "tcp"
-  #       prefix_list_ids = data.aws_prefix_list.s3.id
-  #     }
-  #   ]
-
-  # 2. ADD THIS: Allow Internet Access (For Git, Pip, Docker, etc.)
-  # Traffic goes -> Private SG -> NAT Gateway -> Internet
+  # --- EGRESS (Keep your existing working egress) ---
   egress_with_cidr_blocks = [
     {
       from_port   = 0
