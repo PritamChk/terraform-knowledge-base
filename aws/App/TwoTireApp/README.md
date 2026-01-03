@@ -1,4 +1,4 @@
-## Planning
+## Planning & Execution
 
 1. Creating base file structure for provider aws
 1. Setting Variables
