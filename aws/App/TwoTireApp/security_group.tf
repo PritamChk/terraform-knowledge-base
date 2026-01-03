@@ -26,15 +26,15 @@ module "private_ec2_sg" {
 
   # --- EGRESS (The Fix) ---
 
-  # 1. Keep S3 Access (You already have this)
-  egress_with_prefix_list_ids = [
-    {
-      from_port       = 443
-      to_port         = 443
-      protocol        = "tcp"
-      prefix_list_ids = data.aws_prefix_list.s3.id
-    }
-  ]
+  #   # 1. Keep S3 Access (You already have this)
+  #   egress_with_prefix_list_ids = [
+  #     {
+  #       from_port       = 443
+  #       to_port         = 443
+  #       protocol        = "tcp"
+  #       prefix_list_ids = data.aws_prefix_list.s3.id
+  #     }
+  #   ]
 
   # 2. ADD THIS: Allow Internet Access (For Git, Pip, Docker, etc.)
   # Traffic goes -> Private SG -> NAT Gateway -> Internet
