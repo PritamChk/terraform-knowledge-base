@@ -56,3 +56,14 @@
    1. Last use `ec2-module` to create `EC2` instances in both `private subnet`.
       1. 2 instance: for 2 different private vpc.
       1. 1 instance: for `ssh` to private ip's of those `private subnet` `VMs`
+
+1. `terraform plan` successful
+1. `terraform apply` successful
+1. connect to : `ssh -i /home/ec2-user/.ssh/aws-k3s-key.pem ec2-user@3.109.32.87`
+1. found other details:
+   1. > alb_dns_name = "quiz-vpc-alb-447588094.ap-south-1.elb.amazonaws.com"
+      > app_private_ips = [
+      > > "10.0.62.176",
+      > > "10.0.115.184",
+      > > ]
+      > bastion_public_ip = "3.109.32.87"
