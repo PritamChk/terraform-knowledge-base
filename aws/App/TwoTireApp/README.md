@@ -41,3 +41,5 @@
       1. as usual expected : got error : 
          - >`The given value is not suitable for module.ec2_sg_quiz_vpc.var.ingress_with_cidr_blocks declared at .terraform/modules/ec2_sg_quiz_vpc/variables.tf:85,1-36: element 0: element "cidr_blocks": string required, but have list of string.`
          - > `Error: invalid value for name_prefix (cannot begin with sg-) with module.ec2_sg_quiz_vpc.aws_security_group.this_name_prefix[0], on .terraform/modules/ec2_sg_quiz_vpc/main.tf line 40, in resource "aws_security_group" "this_name_prefix":│   40:   name_prefix            = "${var.name}-"`
+      1. Fixed by changing name `sg-*` to `*-sg` and used `join(",",list_var)` to convert output a string [of , separated cidr values]
+   1. Next Target on the VPC endpoint  
