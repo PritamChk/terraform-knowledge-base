@@ -11,7 +11,8 @@ module "ec2_sg_quiz_vpc" {
   vpc_id      = module.app_vpc.vpc_id
 
 
-  ingress_rules = ["ssh-tcp"]
+  ingress_rules       = ["ssh-tcp"]
+  ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_with_cidr_blocks = [
     {
       from_port   = 8000
