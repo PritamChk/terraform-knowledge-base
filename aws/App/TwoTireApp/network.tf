@@ -1,7 +1,10 @@
 locals {
+  vpc_name               = var.quiz_vpc_name
   availability_zone_list = var.region_az_list
   cidr                   = var.quiz_vpc_cidr
-  
+  public_subnets         = var.quiz_vpc_public_subnet_cidr_block_list
+  private_subnets        = var.quiz_vpc_private_subnet_cidr_block_list
+  vpc_tags               = var.vpc_tags
 }
 
 # Single NAT Gateway
@@ -9,23 +12,20 @@ locals {
 # single_nat_gateway = true
 # one_nat_gateway_per_az = false
 
-module "vpc" {
+module "app_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "my-vpc"
-  cidr = "10.0.0.0/16"
+  name = local.vpc_name
+  cidr = local.cidr
 
-  azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  azs             = local.availability_zone_list
+  private_subnets = local.private_subnets
+  public_subnets  = local.public_subnets
 
-  # NAT GATWAY CONFIG
+  # NAT GATEWAY CONFIG
   enable_nat_gateway     = true
   single_nat_gateway     = true
   one_nat_gateway_per_az = false
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+  tags = local.vpc_tags
 }
