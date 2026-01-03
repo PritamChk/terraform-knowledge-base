@@ -51,4 +51,6 @@
          > name = "com.amazonaws.${var.region}.s3"
          > }
          > ```
-      1.
+      1. added rule to access the `s3` in `ec2-sg`
+   1. Next : generate key ec2-module to create EC2 instances in both private subnet
+   1. Last use ec2-module to create EC2 instances in both private subnet
