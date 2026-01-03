@@ -74,22 +74,22 @@ resource "aws_instance" "bastion" {
 # 2. PRIVATE APP SERVERS (One per Private Subnet)
 # =========================================================
 resource "aws_instance" "app_servers" {
-  # Create one instance for every Private Subnet found
-  for_each = toset(module.app_vpc.private_subnets)
+  # FIX 1: Use 'count' instead of 'for_each' to avoid the "unknown value" error
+  count = length(module.app_vpc.private_subnets)
 
   ami           = data.aws_ami.ec2_ami.id
   instance_type = "t2.micro"
 
-  # 1. Networking (Private)
-  subnet_id                   = each.value # The subnet ID from the loop
-  associate_public_ip_address = false      # No public IP for private apps
+  # FIX 2: Access the specific subnet using the index [0], [1], etc.
+  subnet_id                   = module.app_vpc.private_subnets[count.index]
+  associate_public_ip_address = false
   vpc_security_group_ids      = [module.private_ec2_sg.security_group_id]
 
-  # 2. Key
   key_name = local.key_name
 
   tags = {
-    Name = "${var.quiz_vpc_name}-app-${each.key}"
+    # We use count.index (0, 1) to make unique names
+    Name = "${var.quiz_vpc_name}-app-${count.index + 1}"
     Role = "App-Server"
   }
 }

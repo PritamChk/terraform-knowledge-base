@@ -2,11 +2,13 @@ module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "9.4.0"
 
-  name   = "${var.quiz_vpc_name}-alb"
-  vpc_id = module.app_vpc.vpc_id
+  # FIX: Replace underscores with hyphens automatically
+  name = replace("${var.quiz_vpc_name}-alb", "_", "-")
+
+  vpc_id  = module.app_vpc.vpc_id
+  subnets = module.app_vpc.public_subnets
 
   # 1. PLACEMENT
-  subnets = module.app_vpc.public_subnets
 
   # 2. SECURITY
   # v9 automatically creates a security group if you don't pass one, 
@@ -62,10 +64,12 @@ module "alb" {
 # 6. ATTACHMENT (The "Glue")
 # -------------------------------------------------------------------
 resource "aws_lb_target_group_attachment" "app_server_attachment" {
-  # CHANGE THIS: Point to the new resource
-  for_each = aws_instance.app_servers
+  # Loop via count to match the instances
+  count = length(aws_instance.app_servers)
 
   target_group_arn = module.alb.target_groups["app_targets"].arn
-  target_id        = each.value.id
-  port             = 8000
+
+  # Access the instance ID by index
+  target_id = aws_instance.app_servers[count.index].id
+  port      = 8000
 }
