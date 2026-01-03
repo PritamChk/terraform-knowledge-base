@@ -59,7 +59,7 @@ module "bastion" {
   vpc_security_group_ids      = [module.public_ec2_sg.security_group_id]
 
   instance_type = "t2.micro"
-  key_name      = "aws-k3s-key" # Update this
+  key_name      = local.key_name # Update this
 
   tags = {
     Role = "Bastion"
@@ -87,7 +87,7 @@ module "app_servers" {
   vpc_security_group_ids      = [module.private_ec2_sg.security_group_id]
 
   instance_type = "t2.micro"
-  key_name      = "aws-k3s-key" # Same key is fine
+  key_name      = local.key_name # Same key is fine
 
   tags = {
     Role = "${local.app_vm}"
