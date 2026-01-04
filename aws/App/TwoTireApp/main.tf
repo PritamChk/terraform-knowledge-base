@@ -77,8 +77,9 @@ resource "aws_instance" "app_servers" {
   # FIX 1: Use 'count' instead of 'for_each' to avoid the "unknown value" error
   count = length(module.app_vpc.private_subnets)
 
-  ami           = data.aws_ami.ec2_ami.id
-  instance_type = "t2.micro"
+  ami                  = data.aws_ami.ec2_ami.id
+  instance_type        = "t2.micro"
+  iam_instance_profile = aws_iam_instance_profile.app_instance_profile.name
 
   # FIX 2: Access the specific subnet using the index [0], [1], etc.
   subnet_id                   = module.app_vpc.private_subnets[count.index]
@@ -91,6 +92,19 @@ resource "aws_instance" "app_servers" {
     # We use count.index (0, 1) to make unique names
     Name = "${var.quiz_vpc_name}-app-${count.index + 1}"
     Role = "App-Server"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = "~/.ssh/${local.key_name}.pem"
+    host        = aws_instance.app_servers[count.index].private_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install git unzip pip -y",
+    ]
   }
 }
 
