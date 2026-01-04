@@ -138,3 +138,5 @@
 >    ![ec2-404](imgs/ec2_instances.png)
 > 1. ALB setup
 >    ![alb-404](imgs/lb-setup.png)
+> 1. Hosted App
+>    ![app-404](imgs/hosted_app.png)
