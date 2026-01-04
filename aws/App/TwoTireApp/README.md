@@ -127,3 +127,14 @@
 ---
 
 ### Screenshots from AWS console
+
+> 1. vpc
+>    ![vpc-404](imgs/vpc-setup.png)
+> 1. subnets
+>    ![subnets-404](imgs/subnets.png)
+> 1. Security groups
+>    ![sg-404](imgs/sg-setup.png)
+> 1. EC2 Instances
+>    ![ec2-404](imgs/ec2_instances.png)
+> 1. ALB setup
+>    ![alb-404](imgs/lb-setup.png)
