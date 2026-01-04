@@ -96,7 +96,7 @@ resource "aws_instance" "app_servers" {
 
   user_data = <<-EOF
               #!/bin/bash
-              dnf update -y
-              dnf install git unzip python3-pip -y
+              sudo yum update -y
+              sudo yum install git unzip pip -y
             EOF
 }
