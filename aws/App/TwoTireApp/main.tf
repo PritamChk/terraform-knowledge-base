@@ -94,17 +94,9 @@ resource "aws_instance" "app_servers" {
     Role = "App-Server"
   }
 
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = "~/.ssh/${local.key_name}.pem"
-    host        = aws_instance.app_servers[count.index].private_ip
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum install git unzip pip -y",
-    ]
-  }
+  user_data = <<-EOF
+              #!/bin/bash
+              dnf update -y
+              dnf install git unzip python3-pip -y
+            EOF
 }
-
