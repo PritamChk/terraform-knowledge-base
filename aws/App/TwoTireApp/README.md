@@ -45,12 +45,11 @@
    1. Next Target on the VPC endpoint
       1. Creation code successful but then facing challenge to setup proper sg rule to give connection
       1. got to know the concept of **`aws_prefix_list`**
-      1. > ```tf
-         > # 1. Get the "ID Card" for AWS S3
-         >   data "aws_prefix_list" "s3" {
+      1. > tf
+         > #1. Get the "ID Card" for AWS S3
+         > data "aws_prefix_list" "s3" {
          > name = "com.amazonaws.${var.region}.s3"
          > }
-         > ```
    1. added rule to access the `s3` in `ec2-sg`
    1. Created one more `sg` for `public subnet` access related for `EC2`.
    1. Last use `ec2-module` to create `EC2` instances in both `private subnet`.
@@ -63,7 +62,68 @@
 1. found other details:
    1. > alb_dns_name = "quiz-vpc-alb-447588094.ap-south-1.elb.amazonaws.com"
       > app_private_ips = [
+      >
       > > "10.0.62.176",
       > > "10.0.115.184",
       > > ]
-      > bastion_public_ip = "3.109.32.87"
+      > > bastion_public_ip = "3.109.32.87"
+
+---
+
+## Encountered some issue after above setup | Also the resolution:
+
+1. Encountered Logic Error during terraform apply:
+
+   1. Tried to provision the server using `remote-exec` inside the `aws_instance` block.
+   1. **Issue**: Error: Cycle: `aws_instance.app_servers`...
+   1. **Reason**: The provisioner needed the host IP to run, but Terraform couldn't generate the IP until the instance was created. It was a "Chicken and Egg" problem.
+   1. **`Fix`**: Switched from remote-exec to user_data.
+
+      - This moves the installation logic to the AWS boot process (cloud-init) instead of running it from my local Terraform.
+        > sh
+        > user_data = <<-EOF
+        > #!/bin/bash
+        > dnf update -y
+        > dnf install git unzip python3-pip -y
+        > EOF
+
+   1. Debugging Network Issues (The "504 Gateway Timeout"):
+
+      1. App was deployed, but ALB URL returned 504 Gateway Timeout or 502 Bad Gateway.
+      1. Investigation:
+         - Found a "Double Mismatch" in Security Groups.
+         - `Mismatch 1` (Port): App was running on port 8000 (uvicorn default), but Security Group only allowed 8080.
+         - `Mismatch 2` (Source): Private SG allowed traffic from Bastion, but blocked traffic from the Load Balancer
+         - `Mismatch 3` (Egress): The ALB Security Group had Ingress (Allow In) but missing Egress (Allow Out). The request was getting trapped in the ALB
+      1. **Fix:**
+
+      - > Added egress { from_port = 0, to_port = 0, protocol = "-1", cidr_blocks = ["0.0.0.0/0"] } to ALB SG.
+      - Updated Private SG to allow port `8000` specifically from `module.load_balancer.security_group_id`.
+
+   1. Solving Identity Issues (IAM):
+
+   - App started successfully but crashed immediately when trying to list S3 buckets.
+   - Error: `Error: Unable to locate credentials`
+   - **Reason**: The EC2 instances had no permissions to talk to AWS APIs.
+   - Fix: Created a new `iam.tf` file.
+   - Created a `aws_iam_role` with `S3` access.
+   - Created a `aws_iam_instance_profile` to hold the role.
+   - Attached the profile to `aws_instance.app_servers`.
+   - **Now the app authenticates automatically without hardcoded keys**.
+
+1. Final Manual Deployment & Persistence:
+
+   - Since user_data only installs dependencies, I had to start the app manually.
+   - Used SSH Jump to reach private IP via Bastion:
+   - > `ssh -i <pem-file-path> ec2-user@<BASTION_IP> ec2-user@<PRIVATE_IP>`
+   - Repeated this step for BOTH private servers to ensure High Availability.
+
+1. Final Verification:
+
+- Checked Target Group Health in AWS Console -> Healthy ✅
+- Accessed ALB DNS Name -> App Loaded ✅
+- Estimated Cost calculated for this infra: approx `$0.12/hr` (Mainly due to NAT Gateway).
+
+---
+
+### Screenshots from AWS console
